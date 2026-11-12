@@ -35,7 +35,7 @@
       <small>paper tools</small>
     </a>
     <nav>
-      <a href="#tools">Tools</a>
+      <a href="#tools">All tools</a>
       <a href="workspace/">Workspace</a>
       <a href="roadmap/">Roadmap</a>
       <a href="contribute/">Contribute</a>
@@ -46,20 +46,91 @@
   </header>
 
   <p class="eyebrow">Free · unlimited · open source · made in India</p>
-  <h1>Paper tools that never leave your browser.</h1>
+  <h1>Paper tools that never leave your phone.</h1>
   <p class="lede">
-    Merge, split, compress, convert, sign, scan and redact PDFs on your own machine. Nothing you
-    open here is uploaded — not to my server, not to anyone else's. <b>There is no server.</b>
+    Choose a file below, then pick what to do with it. <b>Nothing you open here is uploaded</b> —
+    not to my server, not to anyone else's. There is no server.
   </p>
 
   <div class="proofstrip">
-    <b>Don't take my word for it.</b><br>
-    Open your browser's developer tools, switch to the <b>Network</b> tab, then drop a file
-    on any tool below. Nothing leaves. Every page here is plain HTML with the PDF libraries
-    sitting in <code>/vendor</code> — no analytics, no trackers, no accounts, no upload endpoint to hit.
+    <b>Your files never leave your phone.</b> No uploads, no accounts, no analytics.
+    <a href="#how-we-know">How we know this →</a>
   </div>
 
-  <h2 class="eyebrow" id="tools">Organise</h2>
+  <section class="panel" id="panelPick">
+    <div class="body stack">
+      <button class="filehero" id="pickBtn" type="button">
+        <span class="big">Choose a file</span>
+        <span class="small">PDF or photo · nothing is uploaded</span>
+      </button>
+      <a class="camerabtn" href="scan-to-pdf/">📷 Scan with camera</a>
+      <div class="shortcuts">
+        <a class="shortcut" href="compress-pdf/">Compress</a>
+        <a class="shortcut" href="merge-pdf/">Merge</a>
+        <a class="shortcut" href="sign-pdf/">Sign</a>
+        <a class="shortcut" href="jpg-to-pdf/">JPG to PDF</a>
+        <a class="shortcut" href="certificate/">Certificates</a>
+      </div>
+      <div id="pickMsg"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panelActions" hidden>
+    <div class="head">
+      <h2 id="actionsTitle">What do you want to do?</h2>
+      <span class="note" id="actionsNote"></span>
+    </div>
+    <div class="body">
+      <div class="actiongrid" id="actions"></div>
+      <p class="hint"><button type="button" class="shortcut" id="startOver">Start over with a different file</button></p>
+    </div>
+  </section>
+
+  <section class="panel" id="panelCompress" hidden>
+    <div class="head"><h2>How small does it need to be?</h2><span class="note" id="compressNote"></span></div>
+    <div class="body stack">
+      <div class="shortcuts" id="homeTargets" role="group" aria-label="Size targets">
+        <button type="button" class="shortcut" data-target="102400">Under 100 KB</button>
+        <button type="button" class="shortcut" data-target="204800">Under 200 KB</button>
+        <button type="button" class="shortcut" data-target="512000">Under 500 KB</button>
+        <button type="button" class="shortcut" data-target="1048576">Under 1 MB</button>
+      </div>
+      <p class="hint">
+        Common limits for Indian government and exam portals. Kagaz tries progressively
+        stronger settings until it fits, or tells you honestly if it can't. Want finer control
+        — lossless mode, or flatten a scan? Use the full <a href="compress-pdf/">Compress PDF</a> page.
+      </p>
+      <p><button type="button" class="shortcut" id="backFromCompress">← Back</button></p>
+    </div>
+  </section>
+
+  <section class="panel" id="panelMerge" hidden>
+    <div class="head"><h2>Merge</h2><span class="note" id="mergeNote"></span></div>
+    <div class="body">
+      <ul class="filelist" id="mergeList"></ul>
+      <p><button type="button" class="shortcut" id="mergeAddMore">+ Add another file to merge</button></p>
+      <div class="stack" style="margin-top:4px">
+        <div>
+          <label class="fld" for="mergeOutName">Output file name</label>
+          <input type="text" id="mergeOutName" value="merged.pdf" spellcheck="false">
+        </div>
+      </div>
+      <div id="mergeMsg"></div>
+      <p><button type="button" class="shortcut" id="backFromMerge">← Back</button></p>
+    </div>
+  </section>
+
+  <div class="bar" id="mergeBar" hidden>
+    <span class="count" id="mergeCount">Add at least one more PDF</span>
+    <button class="btn ghost" id="mergeClear">Clear</button>
+    <button class="btn primary" id="mergeGo" disabled>Merge and download</button>
+  </div>
+
+  <div class="prog" id="prog"></div>
+  <div id="msg"></div>
+  <div id="result"></div>
+
+  <h2 class="eyebrow" id="tools" style="margin-top:36px">Or pick a tool directly</h2>
   <div class="tools">
     <a class="tool" href="merge-pdf/">
       <span class="kicker">Combine</span>
@@ -192,7 +263,7 @@
       says so, rather than corrupting it to make a number look better.
     </p>
 
-    <h2>There is no counter on this page</h2>
+    <h2 id="how-we-know">There is no counter on this page</h2>
     <p>
       You will not find a “2 million documents processed” badge anywhere on this site, and there
       never will be one. A number like that has to be counted somewhere, which means a request
@@ -204,7 +275,9 @@
       you. That is the trade, and I would rather have it this way round.
     </p>
     <p>
-      This is not a promise you have to take on faith. The repository's test suite
+      This is not a promise you have to take on faith. Open your browser's developer tools,
+      switch to the Network tab, then try anything on this page — nothing leaves. The
+      repository's test suite
       <a href="https://github.com/namastevis/kagaz/blob/main/tests/verify.mjs">fails the build</a>
       if any page ever loads something from another origin, or if the shared scripts ever gain a
       network call. If you want a number that tells you whether this is worth trusting, the
@@ -263,6 +336,318 @@
   </footer>
 
 </div>
+<script src="vendor/pdf-lib.min.js"></script>
+<script src="vendor/pdf.min.js"></script>
+<script src="shared/ops.js"></script>
 <script src="shared/kagaz.js"></script>
+<script>
+(function () {
+  'use strict';
+  var K = window.Kagaz, ops = window.KagazOps;
+
+  var current = null;      // { kind:'pdf'|'image', name, size, bytes, pages, images, file }
+  var mergeFiles = [];      // [{ file, name, size, range }]
+  var lastOut = null;       // { bytes, name } — most recent downloadable result
+
+  var TARGET_PRESETS = [
+    { dpi: 220, quality: 0.80 },
+    { dpi: 150, quality: 0.72 },
+    { dpi: 150, quality: 0.55 },
+    { dpi: 96, quality: 0.55 },
+    { dpi: 96, quality: 0.40 },
+    { dpi: 72, quality: 0.40 }
+  ];
+
+  var ACTIONS_PDF = [
+    { key: 'compress', ic: '📉', label: 'Make it smaller', note: 'shrink to a target size', inline: true },
+    { key: 'sign', ic: '✍️', label: 'Sign it', href: 'sign-pdf/' },
+    { key: 'split', ic: '✂️', label: 'Split or pick pages', href: 'split-pdf/' },
+    { key: 'organize', ic: '🔀', label: 'Reorder or rotate', href: 'organize-pdf/' },
+    { key: 'redact', ic: '⬛', label: 'Hide information', href: 'redact-pdf/' },
+    { key: 'watermark', ic: '💧', label: 'Add watermark or page numbers', href: 'watermark-pdf/' },
+    { key: 'topdfimg', ic: '🖼️', label: 'Turn into images', href: 'pdf-to-jpg/' },
+    { key: 'merge', ic: '➕', label: 'Add another file to merge', note: 'combine with this one', inline: true }
+  ];
+  var ACTIONS_IMG = [
+    { key: 'topdf', ic: '🖼️', label: 'Turn into a PDF', href: 'jpg-to-pdf/' }
+  ];
+
+  var pickBtn = K.$('#pickBtn'), pickMsgEl = K.$('#pickMsg');
+  var panelPick = K.$('#panelPick'), panelActions = K.$('#panelActions');
+  var panelCompress = K.$('#panelCompress'), panelMerge = K.$('#panelMerge');
+  var actionsEl = K.$('#actions'), actionsTitle = K.$('#actionsTitle'), actionsNote = K.$('#actionsNote');
+  var progEl = K.$('#prog'), msgEl = K.$('#msg'), resultEl = K.$('#result');
+  var mergeBar = K.$('#mergeBar'), mergeListEl = K.$('#mergeList'), mergeCountEl = K.$('#mergeCount');
+  var mergeGoBtn = K.$('#mergeGo'), mergeClearBtn = K.$('#mergeClear'), mergeMsgEl = K.$('#mergeMsg');
+
+  var pickInput = K.dropzone(panelPick, {
+    accept: '.pdf,application/pdf,image/jpeg,image/png,.jpg,.jpeg,.png',
+    match: function (f) { return K.isPdf(f) || /\.(jpe?g|png)$/i.test(f.name) || /^image\/(jpeg|png)$/.test(f.type); },
+    onFiles: function (added) { loadPicked(added[0]); }
+  });
+  // The hero button is the only visible trigger — the rest of the panel isn't a drop target by itself.
+  panelPick.removeAttribute('role');
+  panelPick.removeAttribute('tabindex');
+  pickBtn.addEventListener('click', function () { pickInput.click(); });
+
+  async function loadPicked(file) {
+    K.say(pickMsgEl, 'info', 'Reading “' + file.name + '”…');
+    try {
+      var bytes = await K.read(file);
+      if (K.isPdf(file)) {
+        var info = await ops.describe(bytes, file.name);
+        current = { kind: 'pdf', name: file.name, size: file.size, bytes: bytes, pages: info.pages, images: info.images, file: file };
+      } else {
+        current = { kind: 'image', name: file.name, size: file.size, bytes: bytes, file: file };
+      }
+      K.say(pickMsgEl, '', null);
+      showActionsFor(current);
+    } catch (err) {
+      K.say(pickMsgEl, 'err', K.humanError(err));
+    }
+  }
+
+  function setStage(stage) {
+    panelPick.hidden = stage !== 'pick';
+    panelActions.hidden = stage !== 'actions';
+    panelCompress.hidden = stage !== 'compress';
+    panelMerge.hidden = stage !== 'merge';
+    mergeBar.hidden = stage !== 'merge';
+  }
+
+  function showActionsFor(file) {
+    actionsEl.innerHTML = '';
+    var list = file.kind === 'pdf' ? ACTIONS_PDF : ACTIONS_IMG;
+    actionsTitle.textContent = 'What do you want to do with “' + trimName(file.name) + '”?';
+    actionsNote.textContent = file.kind === 'pdf' ? file.pages + ' pages · ' + K.bytes(file.size) : K.bytes(file.size);
+
+    list.forEach(function (a) {
+      var node = a.inline
+        ? K.el('button', { type: 'button', class: 'action', onclick: function () { enterInline(a.key); } })
+        : K.el('a', { class: 'action', href: a.href });
+      node.appendChild(K.el('span', { class: 'ic', text: a.ic, 'aria-hidden': 'true' }));
+      var tx = K.el('span', { class: 'tx', text: a.label });
+      if (a.note) tx.appendChild(K.el('small', { text: a.note }));
+      node.appendChild(tx);
+      actionsEl.appendChild(node);
+    });
+
+    resultEl.innerHTML = '';
+    K.say(msgEl, '', null);
+    setStage('actions');
+  }
+
+  function trimName(n) { return n.length > 34 ? n.slice(0, 31) + '…' : n; }
+
+  K.$('#startOver').addEventListener('click', startOver);
+  function startOver() {
+    current = null; mergeFiles = []; lastOut = null;
+    resultEl.innerHTML = '';
+    K.say(msgEl, '', null); K.say(pickMsgEl, '', null);
+    setStage('pick');
+  }
+
+  function enterInline(key) {
+    if (key === 'compress') { setStage('compress'); K.$('#compressNote').textContent = K.bytes(current.size) + ' now'; }
+    else if (key === 'merge') { startMergeWith(current); setStage('merge'); }
+  }
+
+  K.$('#backFromCompress').addEventListener('click', function () { setStage('actions'); });
+  K.$('#backFromMerge').addEventListener('click', function () { setStage('actions'); });
+
+  /* -------------------------------------------------------- inline compress */
+
+  K.$$('#homeTargets button').forEach(function (b) {
+    b.addEventListener('click', function () { runCompressTarget(parseInt(b.getAttribute('data-target'), 10)); });
+  });
+
+  async function runCompressTarget(targetBytes) {
+    K.$$('#homeTargets button').forEach(function (b) { b.disabled = true; });
+    resultEl.innerHTML = '';
+    var bar = K.progress(progEl);
+    var best = null;
+
+    try {
+      for (var i = 0; i < TARGET_PRESETS.length; i++) {
+        var p = TARGET_PRESETS[i];
+        bar.set(i / TARGET_PRESETS.length * 0.95);
+        K.say(msgEl, 'info', 'Trying ' + p.dpi + ' dpi, quality ' + Math.round(p.quality * 100) + '%…');
+        var out = await ops.compress(current.bytes, { mode: 'images', dpi: p.dpi, quality: p.quality, name: current.name }, K.codec);
+        if (!best || out.after < best.after) best = out;
+        if (out.after <= targetBytes) break;
+        await K.tick();
+      }
+      bar.set(1);
+
+      var saved = K.pct(best.before, best.after);
+      var name = current.name.replace(/\.pdf$/i, '') + '_compressed.pdf';
+      var hit = best.after <= targetBytes;
+
+      if (!hit) {
+        K.say(msgEl, 'warn',
+          'Even at the strongest image settings this only gets to ' + K.bytes(best.after) + ', not under ' +
+          K.bytes(targetBytes) + '. Shrinking it further would start destroying the text, so Kagaz stopped ' +
+          'rather than do that silently. The full Compress PDF page has a "flatten pages" option if you want that trade-off.');
+      } else {
+        K.say(msgEl, 'good', 'Down to ' + K.bytes(best.after) + ' from ' + K.bytes(best.before) + ' — ' + saved + '% smaller.');
+      }
+
+      lastOut = { bytes: best.bytes, name: name };
+      showChainResult(best.before, best.after, 'Make it smaller');
+    } catch (err) {
+      K.say(msgEl, 'err', K.humanError(err));
+    } finally {
+      bar.done();
+      K.$$('#homeTargets button').forEach(function (b) { b.disabled = false; });
+    }
+  }
+
+  /* ------------------------------------------------------------ inline merge */
+
+  var mergeInput = null;
+
+  function startMergeWith(file) {
+    mergeFiles = [{ file: file.file, name: file.name, size: file.size, range: '' }];
+    if (!mergeInput) {
+      mergeInput = K.dropzone(K.el('div', { hidden: 'hidden' }), { accept: '.pdf,application/pdf', multiple: true, match: K.isPdf, onFiles: addMergeFiles });
+    }
+    renderMerge();
+  }
+
+  function addMergeFiles(added) {
+    added.forEach(function (f) { mergeFiles.push({ file: f, name: f.name, size: f.size, range: '' }); });
+    renderMerge();
+  }
+
+  K.$('#mergeAddMore').addEventListener('click', function () { mergeInput.click(); });
+
+  function moveMerge(i, d) {
+    var j = i + d;
+    if (j < 0 || j >= mergeFiles.length) return;
+    var t = mergeFiles[i]; mergeFiles[i] = mergeFiles[j]; mergeFiles[j] = t;
+    renderMerge();
+  }
+
+  function renderMerge() {
+    mergeListEl.innerHTML = '';
+    var total = 0;
+    mergeFiles.forEach(function (item, i) {
+      total += item.size;
+      var li = K.el('li', { class: 'fileitem' });
+      li.appendChild(K.el('span', { class: 'idx', text: String(i + 1) }));
+      var meta = K.el('div', { class: 'meta' });
+      meta.appendChild(K.el('div', { class: 'nm', text: item.name, title: item.name }));
+      meta.appendChild(K.el('div', { class: 'sz', text: K.bytes(item.size) }));
+      li.appendChild(meta);
+      var ctl = K.el('div', { class: 'ctl' });
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Move up', 'aria-label': 'Move up',
+        disabled: i === 0 ? 'disabled' : null, onclick: function () { moveMerge(i, -1); }, text: '↑'
+      }));
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Move down', 'aria-label': 'Move down',
+        disabled: i === mergeFiles.length - 1 ? 'disabled' : null, onclick: function () { moveMerge(i, 1); }, text: '↓'
+      }));
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Remove', 'aria-label': 'Remove ' + item.name,
+        onclick: function () { mergeFiles.splice(i, 1); renderMerge(); }, text: '×'
+      }));
+      li.appendChild(ctl);
+      mergeListEl.appendChild(li);
+    });
+    mergeCountEl.innerHTML = mergeFiles.length > 1
+      ? '<b>' + mergeFiles.length + '</b> files · ' + K.bytes(total)
+      : 'Add at least one more PDF';
+    mergeGoBtn.disabled = mergeFiles.length < 2;
+    var warn = K.sizeWarning(total);
+    K.say(mergeMsgEl, 'warn', warn);
+  }
+
+  mergeClearBtn.addEventListener('click', function () { setStage('actions'); });
+
+  mergeGoBtn.addEventListener('click', async function () {
+    mergeGoBtn.disabled = true; mergeClearBtn.disabled = true;
+    resultEl.innerHTML = '';
+    K.say(msgEl, 'info', 'Reading files…');
+    var bar = K.progress(progEl);
+
+    try {
+      var items = [];
+      for (var i = 0; i < mergeFiles.length; i++) {
+        bar.set((i / mergeFiles.length) * 0.4);
+        items.push({
+          name: mergeFiles[i].name,
+          bytes: mergeFiles[i].file ? await K.read(mergeFiles[i].file) : current.bytes,
+          range: mergeFiles[i].range || null
+        });
+        await K.tick();
+      }
+      K.say(msgEl, 'info', 'Merging…');
+      var out = await ops.merge(items, { onProgress: function (frac) { bar.set(0.4 + frac * 0.55); } });
+      bar.set(1);
+
+      var name = (K.$('#mergeOutName').value || 'merged.pdf').replace(/[\\/:*?"<>|]+/g, '_');
+      if (!/\.pdf$/i.test(name)) name += '.pdf';
+
+      K.say(msgEl, 'good', 'Merged ' + out.report.length + ' files into ' + out.pages + ' pages — ' + K.bytes(out.bytes.length) + '.');
+      lastOut = { bytes: out.bytes, name: name };
+      showChainResult(null, null, 'Merge', out);
+    } catch (err) {
+      K.say(msgEl, 'err', K.humanError(err));
+    } finally {
+      bar.done();
+      mergeGoBtn.disabled = mergeFiles.length < 2; mergeClearBtn.disabled = false;
+    }
+  });
+
+  /* ------------------------------------------------------------ result + chain */
+
+  function showChainResult(before, after, label, mergeOut) {
+    setStage('actions'); panelActions.hidden = true;   // nothing to pick again until "do something else"
+
+    var box = K.el('div', { class: 'result' });
+    var figs = K.el('div', { class: 'figures' });
+    if (mergeOut) {
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b>' + mergeOut.pages + '</b>pages' }));
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b>' + K.bytes(mergeOut.bytes.length) + '</b>output' }));
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b>' + mergeOut.report.length + '</b>files in' }));
+    } else {
+      var saved = K.pct(before, after);
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b>' + K.bytes(before) + '</b>before' }));
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b>' + K.bytes(after) + '</b>after' }));
+      figs.appendChild(K.el('div', { class: 'fig', html: '<b class="' + (saved > 0 ? 'win' : '') + '">' + saved + '%</b>smaller' }));
+    }
+    box.appendChild(figs);
+
+    var bar2 = K.el('div', { class: 'resultbar' });
+    bar2.appendChild(K.el('button', {
+      class: 'btn primary', type: 'button', text: 'Download',
+      onclick: function () { K.download(lastOut.bytes, lastOut.name); }
+    }));
+    if (K.canShareFiles()) {
+      bar2.appendChild(K.el('button', {
+        class: 'btn ghost', type: 'button', text: 'Share',
+        onclick: function () { K.share(lastOut.bytes, lastOut.name); }
+      }));
+    }
+    bar2.appendChild(K.el('button', {
+      class: 'btn ghost', type: 'button', text: 'Do something else with it',
+      onclick: chainToNext
+    }));
+    box.appendChild(bar2);
+
+    resultEl.appendChild(box);
+    K.download(lastOut.bytes, lastOut.name);
+  }
+
+  async function chainToNext() {
+    var bytes = lastOut.bytes, name = lastOut.name;
+    var info = await ops.describe(bytes, name);
+    current = { kind: 'pdf', name: name, size: bytes.length, bytes: bytes, pages: info.pages, images: info.images, file: null };
+    panelActions.hidden = false;
+    showActionsFor(current);
+  }
+})();
+</script>
 </body>
 </html>

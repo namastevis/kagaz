@@ -33,11 +33,11 @@
   </header>
 
   <p class="eyebrow">Compress · nothing uploaded</p>
-  <h1>Compress PDF</h1>
+  <h1>Make it smaller</h1>
   <p class="lede">
-    Shrinks the images inside your PDF and <b>leaves the text as text</b>. Most free compressors
-    quietly flatten every page into a picture, which is why your document comes back
-    unsearchable and slightly fuzzy. This one shows you exactly what it changed.
+    Shrinks the pictures inside your PDF and <b>leaves the text as text</b>. Pick how small it
+    needs to be — Kagaz keeps trying until it fits, and tells you honestly if it can't without
+    ruining the text.
   </p>
 
   <section class="panel" id="panelFile">
@@ -53,38 +53,54 @@
   </section>
 
   <section class="panel" id="panelOpts" hidden>
-    <div class="head"><span class="step">2</span><h2>How hard to squeeze</h2><span class="note" id="modeNote"></span></div>
+    <div class="head"><span class="step">2</span><h2>How small does it need to be?</h2><span class="note" id="modeNote"></span></div>
     <div class="body stack">
-      <div>
-        <span class="fldlabel">Method</span>
-        <div class="seg" id="modes" role="group" aria-label="Compression method">
-          <button type="button" data-mode="images" aria-pressed="true">shrink images</button>
-          <button type="button" data-mode="structural" aria-pressed="false">lossless only</button>
-          <button type="button" data-mode="raster" aria-pressed="false">flatten pages</button>
-        </div>
+      <div class="shortcuts" id="targets" role="group" aria-label="Size targets">
+        <button type="button" class="shortcut" data-target="102400">Under 100 KB</button>
+        <button type="button" class="shortcut" data-target="204800">Under 200 KB</button>
+        <button type="button" class="shortcut" data-target="512000">Under 500 KB</button>
+        <button type="button" class="shortcut" data-target="1048576">Under 1 MB</button>
       </div>
+      <p class="hint">
+        Common limits for Indian government and exam portals. Kagaz tries progressively
+        stronger settings until the file fits, or tells you if it can't.
+      </p>
 
-      <div id="modeExplain" class="callout info"></div>
-
-      <div id="imgOpts">
-        <div class="row">
+      <details id="advanced">
+        <summary class="fldlabel" style="cursor:pointer">More control</summary>
+        <div class="stack" style="margin-top:12px">
           <div>
-            <span class="fldlabel">Image detail</span>
-            <div class="seg" id="dpis" role="group" aria-label="Image resolution">
-              <button type="button" data-dpi="96" aria-pressed="false">screen · 96</button>
-              <button type="button" data-dpi="150" aria-pressed="true">ebook · 150</button>
-              <button type="button" data-dpi="220" aria-pressed="false">print · 220</button>
+            <span class="fldlabel">Method</span>
+            <div class="seg" id="modes" role="group" aria-label="Compression method">
+              <button type="button" data-mode="images" aria-pressed="true">shrink images</button>
+              <button type="button" data-mode="structural" aria-pressed="false">lossless only</button>
+              <button type="button" data-mode="raster" aria-pressed="false">flatten pages</button>
             </div>
           </div>
-        </div>
-        <div style="margin-top:14px">
-          <label class="fld" for="quality">JPEG quality — <span id="qVal">72</span>%</label>
-          <input type="range" id="quality" min="40" max="95" value="72" step="1">
-          <p class="hint">Lower is smaller. Below about 60% you start to see it on photographs.</p>
-        </div>
-      </div>
 
-      <div id="planMsg"></div>
+          <div id="modeExplain" class="callout info"></div>
+
+          <div id="imgOpts">
+            <div class="row">
+              <div>
+                <span class="fldlabel">Image detail</span>
+                <div class="seg" id="dpis" role="group" aria-label="Image resolution">
+                  <button type="button" data-dpi="96" aria-pressed="false">screen · 96</button>
+                  <button type="button" data-dpi="150" aria-pressed="true">ebook · 150</button>
+                  <button type="button" data-dpi="220" aria-pressed="false">print · 220</button>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:14px">
+              <label class="fld" for="quality">JPEG quality — <span id="qVal">72</span>%</label>
+              <input type="range" id="quality" min="40" max="95" value="72" step="1">
+              <p class="hint">Lower is smaller. Below about 60% you start to see it on photographs.</p>
+            </div>
+          </div>
+
+          <div id="planMsg"></div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -128,10 +144,10 @@
     <p>
       So the honest way to compress a PDF is to find those images, shrink them to a resolution
       that actually matters at the size they are displayed, re-encode them, and put them back —
-      leaving everything else alone. That is what <b>shrink images</b> does here.
+      leaving everything else alone. That is what the size targets above do, automatically.
     </p>
 
-    <h2>The three methods</h2>
+    <h2>The three methods, if you want to choose yourself</h2>
     <h3>Shrink images — the default</h3>
     <p>
       Walks through every image embedded in the document, downsamples anything larger than your
@@ -175,10 +191,10 @@
     <h2>Common questions</h2>
     <h3>Is my file uploaded?</h3>
     <p>No. There is no server. Watch the Network tab in your developer tools if you would like to confirm it.</p>
-    <h3>Why did nothing happen to my file?</h3>
-    <p>Most likely it contains no images, or the images are in one of the formats listed above. The report after each run tells you which.</p>
+    <h3>What if it can't fit the target?</h3>
+    <p>Kagaz says so plainly, and gives you its best, honest attempt rather than quietly flattening your document into a picture to hit a number. Open "More control" to try flatten pages yourself if you are fine with that trade-off.</p>
     <h3>Can I run it twice to shrink it further?</h3>
-    <p>You can, but you mostly should not. Re-encoding a JPEG that has already been re-encoded adds visible damage without saving much. Lower the quality slider instead.</p>
+    <p>You can, but you mostly should not. Re-encoding a JPEG that has already been re-encoded adds visible damage without saving much. Try a smaller size target instead.</p>
 
     <h2>Other Kagaz tools</h2>
     <ul>
@@ -211,7 +227,17 @@
 (function () {
   'use strict';
   var K = window.Kagaz, ops = window.KagazOps;
-  var current = null, mode = 'images', dpi = 150;
+  var current = null, mode = 'images', dpi = 150, lastOut = null;
+
+  // Tried in order, mild to aggressive, until a size target is met.
+  var TARGET_PRESETS = [
+    { dpi: 220, quality: 0.80 },
+    { dpi: 150, quality: 0.72 },
+    { dpi: 150, quality: 0.55 },
+    { dpi: 96, quality: 0.55 },
+    { dpi: 96, quality: 0.40 },
+    { dpi: 72, quality: 0.40 }
+  ];
 
   var EXPLAIN = {
     images: 'Shrinks the images inside the document and leaves everything else alone. Text stays selectable and searchable.',
@@ -239,7 +265,7 @@
       var warn = K.sizeWarning(file.size);
       if (warn) K.say(fileMsgEl, 'warn', warn);
       else if (info.images === 0) {
-        K.say(fileMsgEl, 'info', 'This document contains no embedded images, so there is very little for “shrink images” to do. Try lossless only — or accept that it is already about as small as it gets.');
+        K.say(fileMsgEl, 'info', 'This document contains no embedded images, so there is very little to shrink. Try "lossless only" under More control — or accept that it is already about as small as it gets.');
       } else K.say(fileMsgEl, '', null);
     } catch (err) {
       current = null;
@@ -268,6 +294,12 @@
   });
 
   K.$('#quality').addEventListener('input', function () { K.$('#qVal').textContent = this.value; });
+
+  K.$$('#targets button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      runTarget(parseInt(b.getAttribute('data-target'), 10));
+    });
+  });
 
   function updateWarnings() {
     if (mode === 'raster') {
@@ -313,11 +345,69 @@
   }
 
   clearBtn.addEventListener('click', function () {
-    current = null;
+    current = null; lastOut = null;
     resultEl.innerHTML = '';
     K.say(msgEl, '', null); K.say(fileMsgEl, '', null);
     render();
   });
+
+  /* ------------------------------------------------------- size-target run */
+
+  async function runTarget(targetBytes) {
+    if (!current) return;
+    goBtn.disabled = true; clearBtn.disabled = true;
+    K.$$('#targets button').forEach(function (b) { b.disabled = true; });
+    resultEl.innerHTML = '';
+    var bar = K.progress(progEl);
+    var best = null;
+
+    try {
+      for (var i = 0; i < TARGET_PRESETS.length; i++) {
+        var p = TARGET_PRESETS[i];
+        bar.set(i / TARGET_PRESETS.length * 0.95);
+        K.say(msgEl, 'info', 'Trying ' + p.dpi + ' dpi, quality ' + Math.round(p.quality * 100) + '%…');
+        var out = await ops.compress(current.bytes, { mode: 'images', dpi: p.dpi, quality: p.quality, name: current.name }, K.codec);
+        if (!best || out.after < best.after) best = out;
+        if (out.after <= targetBytes) break;
+        await K.tick();
+      }
+      bar.set(1);
+      finishCompress(best, targetBytes);
+    } catch (err) {
+      K.say(msgEl, 'err', K.humanError(err));
+    } finally {
+      bar.done();
+      goBtn.disabled = false; clearBtn.disabled = false;
+      K.$$('#targets button').forEach(function (b) { b.disabled = false; });
+    }
+  }
+
+  function finishCompress(out, targetBytes) {
+    var saved = K.pct(out.before, out.after);
+    var name = current.name.replace(/\.pdf$/i, '') + '_compressed.pdf';
+    var hitTarget = targetBytes == null || out.after <= targetBytes;
+
+    if (targetBytes != null && !hitTarget) {
+      K.say(msgEl, 'warn',
+        'Even at the strongest image settings this only gets to ' + K.bytes(out.after) + ', not under ' +
+        K.bytes(targetBytes) + '. Shrinking it further would start destroying the text, and Kagaz will not ' +
+        'do that silently. Open "More control" below and try flatten pages if you are fine with that trade-off.');
+    } else if (out.after >= out.before) {
+      K.say(msgEl, 'warn',
+        'Compression did not help — the result came out no smaller than the original (' +
+        K.bytes(out.before) + '). Your original file is already efficient. Nothing has been downloaded.');
+      showResult(out, saved, false);
+      return;
+    } else {
+      K.say(msgEl, 'good', 'Down to ' + K.bytes(out.after) + ' from ' + K.bytes(out.before) + ' — ' + saved + '% smaller.');
+    }
+
+    lastOut = { bytes: out.bytes, name: name };
+    showResult(out, saved, true);
+    K.download(out.bytes, name);
+  }
+
+  /* --------------------------------------------------------- manual (bar) run */
 
   goBtn.addEventListener('click', async function () {
     if (!current) return;
@@ -345,22 +435,8 @@
           }
         }, K.codec);
       }
-
       bar.set(1);
-      var saved = K.pct(out.before, out.after);
-      var name = current.name.replace(/\.pdf$/i, '') + '_compressed.pdf';
-
-      if (out.after >= out.before) {
-        K.say(msgEl, 'warn',
-          'Compression did not help — the result came out no smaller than the original (' +
-          K.bytes(out.before) + '). Your original file is already efficient. Nothing has been downloaded.');
-        showResult(out, saved, false);
-      } else {
-        K.say(msgEl, 'good', 'Down to ' + K.bytes(out.after) + ' from ' + K.bytes(out.before) + ' — ' + saved + '% smaller.');
-        showResult(out, saved, true);
-        K.download(out.bytes, name);
-      }
-
+      finishCompress(out, null);
     } catch (err) {
       K.say(msgEl, 'err', K.humanError(err));
     } finally {
@@ -396,6 +472,8 @@
     result.stats = { mode: 'raster', images: 0, changed: 0, skipped: [], changes: [] };
     return result;
   }
+
+  /* -------------------------------------------------------------- result UI */
 
   function showResult(out, saved, didDownload) {
     var box = K.el('div', { class: 'result' });
@@ -443,6 +521,21 @@
         class: 'hint',
         text: 'Only a small saving — this document\'s size is mostly not images. That is usually a sign it is already efficient.'
       }));
+    }
+
+    if (didDownload && lastOut) {
+      var bar2 = K.el('div', { class: 'resultbar' });
+      bar2.appendChild(K.el('button', {
+        class: 'btn primary', type: 'button', text: 'Download',
+        onclick: function () { K.download(lastOut.bytes, lastOut.name); }
+      }));
+      if (K.canShareFiles()) {
+        bar2.appendChild(K.el('button', {
+          class: 'btn ghost', type: 'button', text: 'Share',
+          onclick: function () { K.share(lastOut.bytes, lastOut.name); }
+        }));
+      }
+      box.appendChild(bar2);
     }
 
     resultEl.appendChild(box);

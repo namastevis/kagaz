@@ -194,6 +194,30 @@
     K.afterglow();
   };
 
+  /**
+   * Share a result straight to WhatsApp, email, Drive, etc. via the Web Share
+   * API with files. Feature-detected: where a browser can't share this kind
+   * of file (most desktops), it returns false and the caller falls back to
+   * the Download button, which is always shown alongside it anyway.
+   */
+  K.canShareFiles = function () {
+    return !!(navigator.canShare && window.File);
+  };
+
+  K.share = async function (data, filename, mime) {
+    if (!K.canShareFiles()) return false;
+    var blob = data instanceof Blob ? data : new Blob([data], { type: mime || 'application/pdf' });
+    var file = new File([blob], filename, { type: blob.type });
+    if (!navigator.canShare({ files: [file] })) return false;
+    try {
+      await navigator.share({ files: [file] });
+      return true;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return true;   // the person cancelled the sheet, not an error
+      return false;
+    }
+  };
+
   K.zip = async function (files, zipName, onProgress) {
     if (!window.JSZip) throw new Error('JSZip did not load.');
     var zip = new window.JSZip();

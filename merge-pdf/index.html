@@ -35,8 +35,8 @@
   <p class="eyebrow">Merge · nothing uploaded</p>
   <h1>Merge PDF</h1>
   <p class="lede">
-    Combine any number of PDFs into a single file. Page sizes, orientation and rotation are
-    preserved exactly. Runs in this tab — <b>your files never leave your machine</b>.
+    Combine any number of PDFs into one file, in the order you choose. Page sizes, orientation
+    and rotation stay exactly as they were — <b>your files never leave your phone</b>.
   </p>
 
   <section class="panel" id="panelFiles">
@@ -47,6 +47,7 @@
         <span class="small">or tap to choose · add as many as you like · they merge in the order below</span>
       </div>
       <ul class="filelist" id="list"></ul>
+      <button type="button" class="shortcut" id="addMore" hidden>+ Add another file to merge</button>
       <div id="fileMsg"></div>
     </div>
   </section>
@@ -162,14 +163,14 @@
 (function () {
   'use strict';
   var K = window.Kagaz, ops = window.KagazOps;
-  var files = [];
+  var files = [], lastOut = null;
 
   var listEl = K.$('#list'), countEl = K.$('#count'), noteEl = K.$('#fileNote');
   var goBtn = K.$('#go'), clearBtn = K.$('#clear'), progEl = K.$('#prog');
   var msgEl = K.$('#msg'), fileMsgEl = K.$('#fileMsg'), resultEl = K.$('#result');
-  var optsPanel = K.$('#panelOpts');
+  var optsPanel = K.$('#panelOpts'), addMoreBtn = K.$('#addMore');
 
-  K.dropzone(K.$('#drop'), {
+  var input = K.dropzone(K.$('#drop'), {
     accept: '.pdf,application/pdf',
     multiple: true,
     match: K.isPdf,
@@ -178,6 +179,8 @@
       render();
     }
   });
+
+  addMoreBtn.addEventListener('click', function () { input.click(); });
 
   function move(i, delta) {
     var j = i + delta;
@@ -235,6 +238,7 @@
       listEl.appendChild(li);
     });
 
+    addMoreBtn.hidden = files.length === 0;
     noteEl.textContent = files.length ? files.length + ' file' + (files.length > 1 ? 's' : '') + ' · ' + K.bytes(total) : 'no files yet';
     countEl.innerHTML = files.length
       ? '<b>' + files.length + '</b> file' + (files.length > 1 ? 's' : '') + ' · ' + K.bytes(total)
@@ -249,7 +253,7 @@
   }
 
   clearBtn.addEventListener('click', function () {
-    files = [];
+    files = []; lastOut = null;
     render();
     K.say(msgEl, '', null);
     resultEl.innerHTML = '';
@@ -284,6 +288,7 @@
       if (!/\.pdf$/i.test(name)) name += '.pdf';
 
       K.say(msgEl, 'good', 'Merged ' + out.report.length + ' files into ' + out.pages + ' pages — ' + K.bytes(out.bytes.length) + '.');
+      lastOut = { bytes: out.bytes, name: name };
       showReport(out);
       K.download(out.bytes, name);
 
@@ -313,6 +318,22 @@
       ]));
     });
     box.appendChild(table);
+
+    if (lastOut) {
+      var bar2 = K.el('div', { class: 'resultbar' });
+      bar2.appendChild(K.el('button', {
+        class: 'btn primary', type: 'button', text: 'Download',
+        onclick: function () { K.download(lastOut.bytes, lastOut.name); }
+      }));
+      if (K.canShareFiles()) {
+        bar2.appendChild(K.el('button', {
+          class: 'btn ghost', type: 'button', text: 'Share',
+          onclick: function () { K.share(lastOut.bytes, lastOut.name); }
+        }));
+      }
+      box.appendChild(bar2);
+    }
+
     resultEl.appendChild(box);
   }
 

@@ -21,7 +21,7 @@ export default [
       globals: {
         window: 'readonly', document: 'readonly', navigator: 'readonly',
         console: 'readonly', setTimeout: 'readonly', clearTimeout: 'readonly',
-        Blob: 'readonly', URL: 'readonly', FileReader: 'readonly',
+        Blob: 'readonly', URL: 'readonly', FileReader: 'readonly', File: 'readonly',
         ImageData: 'readonly', OffscreenCanvas: 'readonly',
         createImageBitmap: 'readonly', Promise: 'readonly',
         Uint8Array: 'readonly', ArrayBuffer: 'readonly', TextDecoder: 'readonly',

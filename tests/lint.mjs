@@ -13,7 +13,6 @@
  *   3. No persistent storage — the site claims nothing is written to disk.
  *   4. No console noise or debugger statements in shipped pages.
  *   5. No hard-coded http(s) asset URLs (external origins).
- *   6. Every tool page must offer a way to report a problem.
  *
  * MIT © namastevis
  */
@@ -129,19 +128,6 @@ for (const file of htmlFiles) {
 }
 if (external.length) no('no assets from another origin', [...new Set(external)].join(', '));
 else ok('no assets from another origin', htmlFiles.length + ' pages checked');
-
-/* ------------------------------------------------- 6. reporting is reachable */
-
-group('Reporting is reachable');
-
-const toolPages = htmlFiles.filter(p => {
-  const r = rel(p);
-  return r.endsWith('index.html') && r.includes(path.sep) &&
-    !['test', 'report', 'attic'].some(d => r.startsWith(d + path.sep));
-});
-const missing = toolPages.filter(p => !readFileSync(p, 'utf8').includes('report/'));
-if (missing.length) no('every tool page links to /report/', missing.map(rel).join(', '));
-else ok('every tool page links to /report/', toolPages.length + ' pages');
 
 /* --------------------------------------------------------------- housekeeping */
 

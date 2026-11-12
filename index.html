@@ -189,14 +189,12 @@
     <a href="https://wa.me/?text=Kagaz%20%E2%80%94%20free%20PDF%20tools%20that%20never%20leave%20your%20phone.%20https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">WhatsApp</a> ·
     <a href="https://twitter.com/intent/tweet?text=Kagaz%20%E2%80%94%20free%20PDF%20tools%20that%20never%20leave%20your%20phone.&amp;url=https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">X</a> ·
     <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">LinkedIn</a>
-    <span id="igShare"></span>
   </p>
 
   <footer class="foot">
     <div class="r">
       <span>Made with ❤️ in India</span> <span class="dot">·</span>
       <a href="LICENSE">MIT licensed</a> <span class="dot">·</span>
-      <a href="report/">Report a problem</a> <span class="dot">·</span>
       <a href="https://github.com/namastevis/kagaz">Source on GitHub</a>
     </div>
     <div class="r">© <span data-year>2026</span> Amit Jena · no cookies, no analytics, no upload</div>
@@ -214,24 +212,6 @@
 
   // Fill every [data-ic] placeholder written straight into the static markup above.
   K.$$('[data-ic]').forEach(function (n) { n.innerHTML = K.icon(n.getAttribute('data-ic')); });
-
-  // Instagram has no web share-intent URL (unlike WhatsApp/X/LinkedIn), so the
-  // one honest option is the device's own share sheet — which lists Instagram
-  // as a target on a phone. No point showing it where that sheet doesn't exist.
-  if (navigator.share) {
-    K.$('#igShare').appendChild(K.el('a', {
-      href: '#',
-      text: ' · Instagram',
-      onclick: function (e) {
-        e.preventDefault();
-        navigator.share({
-          title: 'Kagaz',
-          text: 'Kagaz — free PDF tools that never leave your phone.',
-          url: 'https://kagaz.namastevis.in/'
-        }).catch(function () {});
-      }
-    }));
-  }
 
   var current = null;      // { kind:'pdf'|'image', name, size, bytes, pages, images, file }
   var mergeFiles = [];      // [{ file, name, size, range }]

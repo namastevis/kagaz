@@ -104,7 +104,7 @@ organize-pdf/ rotate-pdf/ crop-pdf/ page-numbers/
 watermark-pdf/ sign-pdf/ scan-to-pdf/ redact-pdf/
 workspace/              load once, stack operations, download at the end
 certificate/            Certificate Press
-contribute/             how to help, and where to send a chai
+chai/                   buy me a chai, that's the whole page
 test/                   in-browser test bench
 shared/kagaz.css        one stylesheet for every page
 shared/kagaz.js         browser helpers — drop zones, downloads, canvas codec, thumbnails
@@ -151,9 +151,10 @@ All vendored — a CDN would quietly break the offline promise.
 
 ## Contributing
 
-Please do. There is a list of scoped, genuinely useful things to build at
-[/contribute](https://kagaz.namastevis.in/contribute/), and the rules are in
-[CONTRIBUTING.md](CONTRIBUTING.md). Translations into Indian languages are as welcome as code.
+Please do. There is a list of scoped, genuinely useful things to build in
+[CONTRIBUTING.md](CONTRIBUTING.md), and what's planned or ruled out is on the
+[roadmap](https://kagaz.namastevis.in/roadmap/). Translations into Indian languages are as
+welcome as code.
 
 ## Support
 

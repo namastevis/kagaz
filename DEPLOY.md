@@ -51,7 +51,7 @@ weeks to be indexed.
 - [ ] `https://kagaz.namastevis.in/` loads and the padlock is green
 - [ ] `https://press.namastevis.in/` does not resolve at all
 - [ ] Each of `/merge-pdf/`, `/split-pdf/`, `/compress-pdf/`, `/pdf-to-jpg/`, `/certificate/`,
-      `/contribute/` loads
+      `/chai/` loads
 - [ ] Open developer tools → Network, drop a PDF on a tool, and confirm **no requests leave**
 - [ ] `/test/` runs green in Chrome, and again in Safari
 - [ ] Try it on an actual phone, not just a narrow browser window

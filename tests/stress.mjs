@@ -872,6 +872,7 @@ await succeeds('chain is measurably fewer parses than the bytes API', async () =
   b = (await ops.pageNumbers(b, steps[2].opts)).bytes;
   b = (await ops.stampPages(b, steps[3].opts)).bytes;
   const seq = Date.now() - t;
+  if (!b.length) throw new Error('sequential chain produced no bytes');
 
   t = Date.now();
   await ops.chain(big, steps);

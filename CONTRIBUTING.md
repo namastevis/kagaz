@@ -81,7 +81,7 @@ it covers the canvas codec, `createImageBitmap` and rendering, which Node cannot
 
 ## What would help most
 
-The list with detail lives at [/contribute](https://kagaz.namastevis.in/contribute/). Briefly:
+Roughly easiest first:
 
 **Good first issues** — JPG to PDF · rotate and reorder pages · add page numbers ·
 watermarks · dark mode · Hindi, Odia, Tamil and Bengali interface strings.

@@ -24,7 +24,6 @@
       PDFName = PDFLib.PDFName,
       PDFRawStream = PDFLib.PDFRawStream,
       PDFArray = PDFLib.PDFArray,
-      PDFNumber = PDFLib.PDFNumber,
       decodePDFRawStream = PDFLib.decodePDFRawStream;
 
   var VERSION = '1.0.0';

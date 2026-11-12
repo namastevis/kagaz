@@ -30,7 +30,7 @@ export default [
       }
     },
     rules: {
-      'no-unused-vars': ['error', { args: 'none' }],
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
       'no-undef': 'error',
       'no-redeclare': 'error',
       'no-dupe-keys': 'error',
@@ -61,7 +61,7 @@ export default [
       }
     },
     rules: {
-      'no-unused-vars': ['error', { args: 'none' }],
+      'no-unused-vars': ['error', { args: 'none', caughtErrors: 'none' }],
       'no-undef': 'error',
       'eqeqeq': ['error', 'smart']
     }

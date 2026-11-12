@@ -35,11 +35,8 @@
       <small>paper tools</small>
     </a>
     <nav>
-      <a href="#tools">All tools</a>
-      <a href="workspace/">Workspace</a>
-      <a href="roadmap/">Roadmap</a>
-      <a href="contribute/">Contribute</a>
       <a href="https://github.com/namastevis/kagaz">Source</a>
+      <a href="contribute/">Buy me a chai</a>
       <span class="sep" aria-hidden="true"></span>
       <a href="https://namastevis.in/">namastevis.in</a>
     </nav>
@@ -120,6 +117,28 @@
     <button class="btn primary" id="mergeGo" disabled>Merge and download</button>
   </div>
 
+  <section class="panel" id="panelSteps" hidden>
+    <div class="head"><h2>Steps</h2><span class="note" id="stepsNote">no steps yet</span></div>
+    <div class="body">
+      <div class="steplist" id="stepsList"></div>
+      <div class="shortcuts" id="stepsAdder">
+        <button type="button" class="shortcut" data-add="watermark">+ Watermark</button>
+        <button type="button" class="shortcut" data-add="numbers">+ Page numbers</button>
+        <button type="button" class="shortcut" data-add="rotate">+ Rotate</button>
+        <button type="button" class="shortcut" data-add="crop">+ Crop</button>
+        <button type="button" class="shortcut" data-add="sign">+ Signature</button>
+      </div>
+      <div id="stepsMsg"></div>
+      <p><button type="button" class="shortcut" id="backFromSteps">← Back</button></p>
+    </div>
+  </section>
+
+  <div class="bar" id="stepsBar" hidden>
+    <span class="count" id="stepsCount">Add a step</span>
+    <button class="btn ghost" id="stepsClear">Clear</button>
+    <button class="btn primary" id="stepsGo" disabled>Run and download</button>
+  </div>
+
   <div class="prog" id="prog"></div>
   <div id="msg"></div>
   <div id="result"></div>
@@ -164,23 +183,22 @@
       something a person can use.
     </p>
     <div class="links">
-      <a href="https://namastevis.in/">Website</a>
-      <a href="https://github.com/namastevis" rel="noopener">GitHub</a>
-      <a href="https://linkedin.com/in/namastevis" rel="noopener">LinkedIn</a>
-      <a href="https://x.com/namastevis" rel="noopener">X</a>
-      <a href="https://instagram.com/namastevis" rel="noopener">Instagram</a>
-      <a href="https://scholar.google.com/citations?user=t98YXOQAAAAJ&amp;hl=en" rel="noopener">Google Scholar</a>
-      <a href="mailto:amitjena@namastevis.in">Email</a>
+      <a href="https://namastevis.in/">namastevis.in →</a>
     </div>
   </section>
 
   <footer class="foot">
     <div class="r">
+      If Kagaz helped you, share it — not me:
+      <a href="https://wa.me/?text=Kagaz%20%E2%80%94%20free%20PDF%20tools%20that%20never%20leave%20your%20phone.%20https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">WhatsApp</a> <span class="dot">·</span>
+      <a href="https://twitter.com/intent/tweet?text=Kagaz%20%E2%80%94%20free%20PDF%20tools%20that%20never%20leave%20your%20phone.&amp;url=https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">X</a> <span class="dot">·</span>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkagaz.namastevis.in%2F" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="r">
       <span>Made with ❤️ in India</span> <span class="dot">·</span>
       <a href="LICENSE">MIT licensed</a> <span class="dot">·</span>
       <a href="report/">Report a problem</a> <span class="dot">·</span>
-      <a href="https://github.com/namastevis/kagaz">Source on GitHub</a> <span class="dot">·</span>
-      <a href="contribute/">Contribute or buy me a chai</a>
+      <a href="https://github.com/namastevis/kagaz">Source on GitHub</a>
     </div>
     <div class="r">© <span data-year>2026</span> Amit Jena · no cookies, no analytics, no upload</div>
   </footer>
@@ -200,6 +218,8 @@
 
   var current = null;      // { kind:'pdf'|'image', name, size, bytes, pages, images, file }
   var mergeFiles = [];      // [{ file, name, size, range }]
+  var steps = [];           // [{ type, opts }] — queued like /workspace/
+  var seq = 0;
   var lastOut = null;       // { bytes, name } — most recent downloadable result
 
   var TARGET_PRESETS = [
@@ -211,13 +231,18 @@
     { dpi: 72, quality: 0.40 }
   ];
 
+  // "queue" actions add a step to the chain below instead of running right away —
+  // several can stack before you run and download once, same as /workspace/.
   var ACTIONS_PDF = [
     { key: 'compress', ic: 'shrink', label: 'Make it smaller', note: 'shrink to a target size', inline: true },
-    { key: 'sign', ic: 'pen', label: 'Sign it', href: 'sign-pdf/' },
+    { key: 'sign', ic: 'pen', label: 'Sign it', queue: true },
+    { key: 'watermark', ic: 'droplet', label: 'Add a watermark', queue: true },
+    { key: 'numbers', ic: 'number', label: 'Number the pages', queue: true },
+    { key: 'rotate', ic: 'rotate', label: 'Rotate pages', queue: true },
+    { key: 'crop', ic: 'crop', label: 'Crop margins', queue: true },
     { key: 'split', ic: 'scissors', label: 'Split or pick pages', href: 'split-pdf/' },
-    { key: 'organize', ic: 'rotate', label: 'Reorder or rotate', href: 'organize-pdf/' },
+    { key: 'organize', ic: 'rotate', label: 'Reorder pages', href: 'organize-pdf/' },
     { key: 'redact', ic: 'eye', label: 'Hide information', href: 'redact-pdf/' },
-    { key: 'watermark', ic: 'droplet', label: 'Add watermark or page numbers', href: 'watermark-pdf/' },
     { key: 'topdfimg', ic: 'image', label: 'Turn into images', href: 'pdf-to-jpg/' },
     { key: 'merge', ic: 'plus', label: 'Add another file to merge', note: 'combine with this one', inline: true }
   ];
@@ -227,11 +252,13 @@
 
   var pickBtn = K.$('#pickBtn'), pickMsgEl = K.$('#pickMsg');
   var panelPick = K.$('#panelPick'), panelActions = K.$('#panelActions');
-  var panelCompress = K.$('#panelCompress'), panelMerge = K.$('#panelMerge');
+  var panelCompress = K.$('#panelCompress'), panelMerge = K.$('#panelMerge'), panelSteps = K.$('#panelSteps');
   var actionsEl = K.$('#actions'), actionsTitle = K.$('#actionsTitle'), actionsNote = K.$('#actionsNote');
   var progEl = K.$('#prog'), msgEl = K.$('#msg'), resultEl = K.$('#result');
   var mergeBar = K.$('#mergeBar'), mergeListEl = K.$('#mergeList'), mergeCountEl = K.$('#mergeCount');
   var mergeGoBtn = K.$('#mergeGo'), mergeClearBtn = K.$('#mergeClear'), mergeMsgEl = K.$('#mergeMsg');
+  var stepsBar = K.$('#stepsBar'), stepsListEl = K.$('#stepsList'), stepsNoteEl = K.$('#stepsNote');
+  var stepsGoBtn = K.$('#stepsGo'), stepsClearBtn = K.$('#stepsClear'), stepsMsgEl = K.$('#stepsMsg'), stepsCountEl = K.$('#stepsCount');
 
   var pickInput = K.dropzone(panelPick, {
     accept: '.pdf,application/pdf,image/jpeg,image/png,.jpg,.jpeg,.png',
@@ -266,6 +293,8 @@
     panelCompress.hidden = stage !== 'compress';
     panelMerge.hidden = stage !== 'merge';
     mergeBar.hidden = stage !== 'merge';
+    panelSteps.hidden = stage !== 'steps';
+    stepsBar.hidden = stage !== 'steps';
   }
 
   function showActionsFor(file) {
@@ -275,9 +304,12 @@
     actionsNote.textContent = file.kind === 'pdf' ? file.pages + ' pages · ' + K.bytes(file.size) : K.bytes(file.size);
 
     list.forEach(function (a) {
-      var node = a.inline
-        ? K.el('button', { type: 'button', class: 'action', onclick: function () { enterInline(a.key); } })
-        : K.el('a', { class: 'action', href: a.href });
+      var node = a.href
+        ? K.el('a', { class: 'action', href: a.href })
+        : K.el('button', {
+            type: 'button', class: 'action',
+            onclick: function () { a.queue ? enterQueue(a.key) : enterInline(a.key); }
+          });
       node.appendChild(K.el('span', { class: 'ic', html: K.icon(a.ic), 'aria-hidden': 'true' }));
       var tx = K.el('span', { class: 'tx', text: a.label });
       if (a.note) tx.appendChild(K.el('small', { text: a.note }));
@@ -295,7 +327,7 @@
 
   K.$('#startOver').addEventListener('click', startOver);
   function startOver() {
-    current = null; mergeFiles = []; lastOut = null;
+    current = null; mergeFiles = []; steps = []; lastOut = null;
     resultEl.innerHTML = '';
     K.say(msgEl, '', null); K.say(pickMsgEl, '', null);
     setStage('pick');
@@ -306,8 +338,14 @@
     else if (key === 'merge') { startMergeWith(current); setStage('merge'); }
   }
 
+  function enterQueue(key) {
+    addStep(key);
+    setStage('steps');
+  }
+
   K.$('#backFromCompress').addEventListener('click', function () { setStage('actions'); });
   K.$('#backFromMerge').addEventListener('click', function () { setStage('actions'); });
+  K.$('#backFromSteps').addEventListener('click', function () { setStage('actions'); });
 
   /* -------------------------------------------------------- inline compress */
 
@@ -451,6 +489,315 @@
     } finally {
       bar.done();
       mergeGoBtn.disabled = mergeFiles.length < 2; mergeClearBtn.disabled = false;
+    }
+  });
+
+  /* -------------------------------------------------------------- step queue */
+  /* Rotate, crop, watermark, page numbers, signature — same engine /workspace/
+     uses (ops.chain, one parse, one write), reached straight from the action
+     grid instead of a separate page. Several can stack; you choose whether to
+     download after each one or keep going and download once at the end. */
+
+  function num(v, fallback) { var n = parseFloat(v); return isNaN(n) ? fallback : n; }
+
+  var STEP_TYPES = {
+    rotate: {
+      label: 'Rotate', defaults: { angle: 90, ranges: 'all' },
+      summary: function (o) { return 'turn ' + o.angle + '° · ' + o.ranges; },
+      fields: [
+        { key: 'angle', label: 'Turn', type: 'seg', options: [[90, '90° right'], [270, '90° left'], [180, '180°']] },
+        { key: 'ranges', label: 'Pages', type: 'text', placeholder: 'all, or 1-3' }
+      ],
+      step: function (o) {
+        return { type: 'rotate', opts: { angle: num(o.angle, 90), ranges: /^all$/i.test(String(o.ranges).trim()) ? null : o.ranges } };
+      }
+    },
+    crop: {
+      label: 'Crop', defaults: { top: 0, bottom: 0, left: 0, right: 0 },
+      summary: function (o) { return 'trim ' + [o.top, o.right, o.bottom, o.left].join('/') + '%'; },
+      fields: [
+        { key: 'top', label: 'Top %', type: 'range', min: 0, max: 45 },
+        { key: 'bottom', label: 'Bottom %', type: 'range', min: 0, max: 45 },
+        { key: 'left', label: 'Left %', type: 'range', min: 0, max: 45 },
+        { key: 'right', label: 'Right %', type: 'range', min: 0, max: 45 }
+      ],
+      step: function (o) {
+        return { type: 'crop', opts: { margins: {
+          top: num(o.top, 0) / 100, bottom: num(o.bottom, 0) / 100, left: num(o.left, 0) / 100, right: num(o.right, 0) / 100
+        } } };
+      }
+    },
+    numbers: {
+      label: 'Page numbers', defaults: { position: 'bottom-centre', format: '{n}', start: 1, size: 11, ranges: 'all' },
+      summary: function (o) { return '“' + o.format.replace('{n}', o.start) + '” · ' + o.position.replace('-', ' '); },
+      fields: [
+        { key: 'position', label: 'Position', type: 'seg', options: [['bottom-centre', 'bottom centre'], ['bottom-right', 'bottom right'], ['top-right', 'top right']] },
+        { key: 'format', label: 'Wording', type: 'seg', options: [['{n}', '1'], ['- {n} -', '- 1 -'], ['Page {n}', 'Page 1'], ['{n} of {total}', '1 of 20']] },
+        { key: 'start', label: 'Start at', type: 'number' },
+        { key: 'size', label: 'Size (pt)', type: 'range', min: 6, max: 28 },
+        { key: 'ranges', label: 'Pages', type: 'text', placeholder: 'all, or 2- to skip a cover' }
+      ],
+      step: function (o) {
+        return { type: 'numbers', opts: {
+          position: o.position, format: o.format, start: num(o.start, 1), size: num(o.size, 11),
+          ranges: /^all$/i.test(String(o.ranges).trim()) ? null : o.ranges
+        } };
+      }
+    },
+    watermark: {
+      label: 'Watermark', defaults: { text: 'CONFIDENTIAL', opacity: 25, angle: 45, size: 48, tile: 'yes', color: '#d23b36' },
+      summary: function (o) { return '“' + o.text + '” at ' + o.opacity + '%'; },
+      fields: [
+        { key: 'text', label: 'Text', type: 'text', placeholder: 'DRAFT' },
+        { key: 'tile', label: 'Layout', type: 'seg', options: [['yes', 'repeat across'], ['no', 'once, centred']] },
+        { key: 'opacity', label: 'Opacity %', type: 'range', min: 2, max: 100 },
+        { key: 'angle', label: 'Angle °', type: 'range', min: 0, max: 90 },
+        { key: 'size', label: 'Size (pt)', type: 'range', min: 10, max: 140 },
+        { key: 'color', label: 'Colour', type: 'color' }
+      ],
+      step: function (o) {
+        if (!String(o.text).trim()) throw new Error('no watermark text');
+        return { type: 'stamp', opts: {
+          text: String(o.text).trim(), tile: o.tile === 'yes', opacity: num(o.opacity, 25) / 100,
+          angle: num(o.angle, 45), size: num(o.size, 48), color: o.color, position: 'centre'
+        } };
+      }
+    },
+    sign: {
+      label: 'Signature', defaults: { position: 'bottom-right', scale: 30, ranges: 'last', png: null }, custom: true,
+      summary: function (o) { return (o.png ? 'drawn' : 'not drawn yet') + ' · ' + o.ranges; },
+      step: function (o) {
+        if (!o.png) throw new Error('no signature was drawn');
+        return { type: 'stamp', opts: { image: o.png, imageType: 'png', opacity: 1, scale: num(o.scale, 30) / 100, position: o.position, ranges: o.ranges } };
+      }
+    }
+  };
+
+  function field(spec, opts, onChange) {
+    var id = 'f' + (++seq);
+    var wrap = K.el('div');
+
+    if (spec.type === 'seg') {
+      wrap.appendChild(K.el('span', { class: 'fldlabel', text: spec.label }));
+      var seg = K.el('div', { class: 'seg', role: 'group', 'aria-label': spec.label });
+      spec.options.forEach(function (pair) {
+        var b = K.el('button', {
+          type: 'button', text: pair[1], 'aria-pressed': String(String(opts[spec.key]) === String(pair[0])),
+          onclick: function () {
+            opts[spec.key] = pair[0];
+            K.$$('button', seg).forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+            onChange();
+          }
+        });
+        seg.appendChild(b);
+      });
+      wrap.appendChild(seg);
+      return wrap;
+    }
+
+    var label = K.el('label', { class: 'fld', for: id });
+    if (spec.type === 'range') {
+      var out = K.el('span', { text: String(opts[spec.key]) });
+      label.appendChild(document.createTextNode(spec.label + ' — '));
+      label.appendChild(out);
+      wrap.appendChild(label);
+      wrap.appendChild(K.el('input', {
+        type: 'range', id: id, min: spec.min, max: spec.max, value: opts[spec.key],
+        oninput: function () { opts[spec.key] = this.value; out.textContent = this.value; onChange(); }
+      }));
+      return wrap;
+    }
+
+    label.textContent = spec.label;
+    wrap.appendChild(label);
+    wrap.appendChild(K.el('input', {
+      type: spec.type === 'number' ? 'number' : (spec.type === 'color' ? 'color' : 'text'),
+      id: id, value: opts[spec.key], placeholder: spec.placeholder || null, spellcheck: 'false',
+      oninput: function () { opts[spec.key] = this.value; onChange(); }
+    }));
+    return wrap;
+  }
+
+  /** The signature step needs a drawing surface, so it draws its own body. */
+  function signatureBody(step, onChange) {
+    var box = K.el('div', { class: 'stack' });
+    var canvas = K.el('canvas', { class: 'wpad', width: 840, height: 300 });
+    var ctx = canvas.getContext('2d');
+    ctx.lineCap = ctx.lineJoin = 'round';
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#14171D';
+
+    var drawing = false, last = null, drawn = false;
+
+    function pt(e) {
+      var r = canvas.getBoundingClientRect();
+      var t = e.touches ? e.touches[0] : e;
+      return { x: (t.clientX - r.left) * (canvas.width / r.width), y: (t.clientY - r.top) * (canvas.height / r.height) };
+    }
+    function down(e) { e.preventDefault(); drawing = true; last = pt(e); }
+    function move(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      var p = pt(e);
+      ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+      last = p; drawn = true;
+    }
+    async function up() {
+      if (!drawing) return;
+      drawing = false;
+      if (drawn) { step.opts.png = await trim(); onChange(); }
+    }
+
+    canvas.addEventListener('pointerdown', down);
+    canvas.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    canvas.addEventListener('touchstart', down, { passive: false });
+    canvas.addEventListener('touchmove', move, { passive: false });
+    canvas.addEventListener('touchend', up);
+
+    async function trim() {
+      var img = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      var minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0, found = false;
+      for (var y = 0; y < canvas.height; y++) {
+        for (var x = 0; x < canvas.width; x++) {
+          if (img[(y * canvas.width + x) * 4 + 3] > 8) {
+            found = true;
+            if (x < minX) minX = x; if (x > maxX) maxX = x;
+            if (y < minY) minY = y; if (y > maxY) maxY = y;
+          }
+        }
+      }
+      if (!found) return null;
+      var pad = 10;
+      minX = Math.max(0, minX - pad); minY = Math.max(0, minY - pad);
+      maxX = Math.min(canvas.width - 1, maxX + pad); maxY = Math.min(canvas.height - 1, maxY + pad);
+      var out = document.createElement('canvas');
+      out.width = maxX - minX + 1; out.height = maxY - minY + 1;
+      out.getContext('2d').drawImage(canvas, minX, minY, out.width, out.height, 0, 0, out.width, out.height);
+      var enc = await K.canvasToBytes(out, 'image/png');
+      return enc ? enc.bytes : null;
+    }
+
+    box.appendChild(K.el('span', { class: 'fldlabel', text: 'Draw your signature' }));
+    box.appendChild(canvas);
+    box.appendChild(K.el('button', {
+      class: 'btn ghost', type: 'button', text: 'Clear',
+      onclick: function () { ctx.clearRect(0, 0, canvas.width, canvas.height); drawn = false; step.opts.png = null; onChange(); }
+    }));
+
+    box.appendChild(field({ key: 'position', label: 'Position', type: 'seg', options: [['bottom-right', 'bottom right'], ['bottom-left', 'bottom left'], ['bottom-centre', 'bottom centre']] }, step.opts, onChange));
+    box.appendChild(field({ key: 'scale', label: 'Width % of page', type: 'range', min: 8, max: 80 }, step.opts, onChange));
+    box.appendChild(field({ key: 'ranges', label: 'Pages to sign', type: 'text', placeholder: 'last, all, or 3' }, step.opts, onChange));
+    return box;
+  }
+
+  function addStep(type) {
+    var def = STEP_TYPES[type];
+    var opts = {};
+    Object.keys(def.defaults).forEach(function (k) { opts[k] = def.defaults[k]; });
+    steps.push({ type: type, opts: opts });
+    renderSteps();
+  }
+
+  function moveStep(i, d) {
+    var j = i + d;
+    if (j < 0 || j >= steps.length) return;
+    var t = steps[i]; steps[i] = steps[j]; steps[j] = t;
+    renderSteps();
+  }
+
+  function renderSteps() {
+    stepsListEl.innerHTML = '';
+
+    steps.forEach(function (step, i) {
+      var def = STEP_TYPES[step.type];
+      var card = K.el('div', { class: 'step-card' });
+
+      var head = K.el('div', { class: 'sh' });
+      head.appendChild(K.el('span', { class: 'step', text: String(i + 1) }));
+      head.appendChild(K.el('h3', { text: def.label }));
+      var ctl = K.el('div', { class: 'ctl' });
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Move up', 'aria-label': 'Move ' + def.label + ' earlier',
+        disabled: i === 0 ? 'disabled' : null, onclick: function () { moveStep(i, -1); }, text: '↑'
+      }));
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Move down', 'aria-label': 'Move ' + def.label + ' later',
+        disabled: i === steps.length - 1 ? 'disabled' : null, onclick: function () { moveStep(i, 1); }, text: '↓'
+      }));
+      ctl.appendChild(K.el('button', {
+        class: 'iconbtn', title: 'Remove step', 'aria-label': 'Remove ' + def.label,
+        onclick: function () { steps.splice(i, 1); renderSteps(); }, text: '×'
+      }));
+      head.appendChild(ctl);
+      card.appendChild(head);
+
+      var body = K.el('div', { class: 'stack' });
+      if (def.custom) {
+        body.appendChild(signatureBody(step, summariseSteps));
+      } else {
+        def.fields.forEach(function (spec) { body.appendChild(field(spec, step.opts, summariseSteps)); });
+      }
+      card.appendChild(body);
+      stepsListEl.appendChild(card);
+    });
+
+    summariseSteps();
+  }
+
+  function summariseSteps() {
+    stepsNoteEl.textContent = steps.length ? steps.length + ' step' + (steps.length === 1 ? '' : 's') : 'no steps yet';
+    stepsCountEl.innerHTML = steps.length
+      ? '<b>' + steps.length + '</b> step' + (steps.length === 1 ? '' : 's') + ' on ' + (current ? current.pages + ' pages' : '')
+      : 'Add a step';
+    stepsGoBtn.disabled = steps.length === 0;
+
+    var unsigned = steps.some(function (s) { return s.type === 'sign' && !s.opts.png; });
+    if (unsigned) K.say(stepsMsgEl, 'warn', 'Draw a signature in the signature step before running.');
+    else K.say(stepsMsgEl, '', null);
+  }
+
+  K.$$('#stepsAdder button').forEach(function (b) {
+    b.addEventListener('click', function () { addStep(b.getAttribute('data-add')); });
+  });
+
+  stepsClearBtn.addEventListener('click', function () { steps = []; renderSteps(); setStage('actions'); });
+
+  stepsGoBtn.addEventListener('click', async function () {
+    if (!current || !steps.length) return;
+    stepsGoBtn.disabled = true; stepsClearBtn.disabled = true;
+    resultEl.innerHTML = '';
+    var bar = K.progress(progEl);
+
+    try {
+      var plan = steps.map(function (step, i) {
+        try { return STEP_TYPES[step.type].step(step.opts); }
+        catch (err) { throw new Error('Step ' + (i + 1) + ', ' + STEP_TYPES[step.type].label + ' — ' + err.message + '.'); }
+      });
+
+      var before = current.bytes.length;
+      var out = await ops.chain(current.bytes, plan, {
+        name: current.name,
+        onProgress: function (frac, type) {
+          bar.set(frac * 0.92);
+          var at = Math.min(steps.length - 1, Math.round(frac * steps.length));
+          K.say(msgEl, 'info', 'Step ' + (at + 1) + ' of ' + steps.length + ' — ' + STEP_TYPES[steps[at].type].label + '…');
+        }
+      }, K.codec);
+
+      bar.set(1);
+      var name = current.name.replace(/\.pdf$/i, '') + '_kagaz.pdf';
+      K.say(msgEl, 'good', steps.length + ' step' + (steps.length === 1 ? '' : 's') + ' applied · ' +
+        K.bytes(before) + ' → ' + K.bytes(out.bytes.length) + '.');
+
+      lastOut = { bytes: out.bytes, name: name };
+      steps = [];
+      showChainResult(before, out.bytes.length, 'Steps');
+    } catch (err) {
+      K.say(msgEl, 'err', K.humanError(err));
+    } finally {
+      bar.done();
+      stepsGoBtn.disabled = false; stepsClearBtn.disabled = false;
     }
   });
 

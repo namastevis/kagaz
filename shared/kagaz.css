@@ -205,6 +205,18 @@ input[type=range]{width:100%; accent-color:var(--blue); height:var(--tap)}
 .drop .big{font-weight:700; font-size:15px}
 .drop .small{font-family:var(--sans); font-size:13px; color:var(--ink-soft); line-height:1.5}
 
+/* queued steps — rotate, crop, watermark, page numbers, signature */
+.steplist{display:flex; flex-direction:column; margin-top:4px}
+.step-card{padding:14px 0; border-bottom:1px solid var(--line)}
+.steplist .step-card:last-child{border-bottom:none}
+.step-card > .sh{display:flex; align-items:center; gap:9px; margin-bottom:10px; flex-wrap:wrap}
+.step-card > .sh h3{margin:0; font-size:15px; font-weight:700; flex:1}
+.step-card > .sh .ctl{display:flex; gap:2px}
+.wpad{
+  border:1.5px dashed var(--line-strong); border-radius:6px; background:var(--card-soft);
+  touch-action:none; cursor:crosshair; display:block; width:100%; max-width:420px;
+}
+
 /* file list — buttons rather than drag alone, so it works on a phone */
 .filelist{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:8px}
 .fileitem{

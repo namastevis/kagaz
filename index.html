@@ -45,25 +45,20 @@
     </nav>
   </header>
 
-  <p class="eyebrow">Free · unlimited · open source · made in India</p>
   <h1>Paper tools that never leave your phone.</h1>
-  <p class="lede">
-    Choose a file below, then pick what to do with it. <b>Nothing you open here is uploaded</b> —
-    not to my server, not to anyone else's. There is no server.
-  </p>
+  <p class="lede">Choose a file below, then pick what to do with it.</p>
 
   <div class="proofstrip">
-    <b>Your files never leave your phone.</b> No uploads, no accounts, no analytics.
-    <a href="#how-we-know">How we know this →</a>
+    Your files never leave your phone — nothing is uploaded, there are no accounts, no analytics.
   </div>
 
   <section class="panel" id="panelPick">
     <div class="body stack">
       <button class="filehero" id="pickBtn" type="button">
         <span class="big">Choose a file</span>
-        <span class="small">PDF or photo · nothing is uploaded</span>
+        <span class="small">PDF or photo</span>
       </button>
-      <a class="camerabtn" href="scan-to-pdf/">📷 Scan with camera</a>
+      <a class="camerabtn" href="scan-to-pdf/"><span class="ic" data-ic="camera"></span>Scan with camera</a>
       <div class="shortcuts">
         <a class="shortcut" href="compress-pdf/">Compress</a>
         <a class="shortcut" href="merge-pdf/">Merge</a>
@@ -96,9 +91,8 @@
         <button type="button" class="shortcut" data-target="1048576">Under 1 MB</button>
       </div>
       <p class="hint">
-        Common limits for Indian government and exam portals. Kagaz tries progressively
-        stronger settings until it fits, or tells you honestly if it can't. Want finer control
-        — lossless mode, or flatten a scan? Use the full <a href="compress-pdf/">Compress PDF</a> page.
+        Common limits for Indian government and exam portals. For finer control, use the full
+        <a href="compress-pdf/">Compress PDF</a> page.
       </p>
       <p><button type="button" class="shortcut" id="backFromCompress">← Back</button></p>
     </div>
@@ -130,187 +124,44 @@
   <div id="msg"></div>
   <div id="result"></div>
 
-  <h2 class="eyebrow" id="tools" style="margin-top:36px">Or pick a tool directly</h2>
+  <h2 class="eyebrow" id="tools" style="margin-top:36px">Organise</h2>
   <div class="tools">
-    <a class="tool" href="merge-pdf/">
-      <span class="kicker">Combine</span>
-      <h3>Merge PDF <span class="arrow">→</span></h3>
-      <p>Join any number of PDFs into one. Page sizes, orientation and rotation preserved exactly.</p>
-    </a>
-    <a class="tool" href="split-pdf/">
-      <span class="kicker">Divide</span>
-      <h3>Split PDF <span class="arrow">→</span></h3>
-      <p>Pull out a range, break every N pages, or explode one file into many. Good for scanned invoice batches.</p>
-    </a>
-    <a class="tool" href="organize-pdf/">
-      <span class="kicker">Arrange</span>
-      <h3>Organize PDF <span class="arrow">→</span></h3>
-      <p>See every page, then reorder, remove, duplicate or turn them on a visual grid.</p>
-    </a>
-    <a class="tool" href="rotate-pdf/">
-      <span class="kicker">Turn</span>
-      <h3>Rotate PDF <span class="arrow">→</span></h3>
-      <p>Fix sideways pages and save it into the file, so it stays fixed for everyone who opens it.</p>
-    </a>
-    <a class="tool" href="crop-pdf/">
-      <span class="kicker">Trim</span>
-      <h3>Crop PDF <span class="arrow">→</span></h3>
-      <p>Cut wide margins so text fills an e-reader screen, with a live preview.</p>
-    </a>
+    <a class="tool" href="merge-pdf/"><span class="ic" data-ic="merge"></span><span class="tx"><h3>Merge PDF</h3><p>Join any number of PDFs into one, in the order you choose.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="split-pdf/"><span class="ic" data-ic="scissors"></span><span class="tx"><h3>Split PDF</h3><p>Pull out a range, break every N pages, or explode one file into many.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="organize-pdf/"><span class="ic" data-ic="rotate"></span><span class="tx"><h3>Organize PDF</h3><p>See every page, then reorder, remove, duplicate or turn them.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="rotate-pdf/"><span class="ic" data-ic="rotate"></span><span class="tx"><h3>Rotate PDF</h3><p>Fix sideways pages and save it into the file.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="crop-pdf/"><span class="ic" data-ic="crop"></span><span class="tx"><h3>Crop PDF</h3><p>Cut wide margins so text fills an e-reader screen.</p></span><span class="chev" data-ic="chev"></span></a>
   </div>
 
   <h2 class="eyebrow">Convert and shrink</h2>
   <div class="tools">
-    <a class="tool" href="compress-pdf/">
-      <span class="kicker">Shrink</span>
-      <h3>Compress PDF <span class="arrow">→</span></h3>
-      <p>Downsamples the images inside and leaves the text as text. Tells you exactly what it changed and what it refused to touch.</p>
-    </a>
-    <a class="tool" href="pdf-to-jpg/">
-      <span class="kicker">Convert</span>
-      <h3>PDF to JPG <span class="arrow">→</span></h3>
-      <p>Pages as images at whatever resolution you actually need — 72 dpi for a screen, 300 for print.</p>
-    </a>
-    <a class="tool" href="jpg-to-pdf/">
-      <span class="kicker">Convert</span>
-      <h3>JPG to PDF <span class="arrow">→</span></h3>
-      <p>Photos and screenshots into one document. No watermark, no page limit.</p>
-    </a>
-    <a class="tool" href="scan-to-pdf/">
-      <span class="kicker">Capture</span>
-      <h3>Scan to PDF <span class="arrow">→</span></h3>
-      <p>Photograph paper with your phone camera. No app installed, and the photographs never leave the device.</p>
-    </a>
+    <a class="tool" href="compress-pdf/"><span class="ic" data-ic="shrink"></span><span class="tx"><h3>Compress PDF</h3><p>Shrink the images inside, leave the text as text.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="pdf-to-jpg/"><span class="ic" data-ic="image"></span><span class="tx"><h3>PDF to JPG</h3><p>Pages as images at whatever resolution you need.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="jpg-to-pdf/"><span class="ic" data-ic="image"></span><span class="tx"><h3>JPG to PDF</h3><p>Photos and screenshots into one document.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="scan-to-pdf/"><span class="ic" data-ic="camera"></span><span class="tx"><h3>Scan to PDF</h3><p>Photograph paper with your phone camera.</p></span><span class="chev" data-ic="chev"></span></a>
   </div>
 
   <h2 class="eyebrow">Mark and protect</h2>
   <div class="tools">
-    <a class="tool" href="redact-pdf/">
-      <span class="kicker">Remove</span>
-      <h3>Redact PDF <span class="arrow">→</span></h3>
-      <p>Destroys what is underneath rather than covering it. A black rectangle is not redaction.</p>
-    </a>
-    <a class="tool" href="sign-pdf/">
-      <span class="kicker">Sign</span>
-      <h3>Sign PDF <span class="arrow">→</span></h3>
-      <p>Draw a signature and place it. Your signature is as sensitive as the document — neither one leaves your device.</p>
-    </a>
-    <a class="tool" href="watermark-pdf/">
-      <span class="kicker">Stamp</span>
-      <h3>Watermark PDF <span class="arrow">→</span></h3>
-      <p>Text or a logo across the pages, with opacity, angle and page range.</p>
-    </a>
-    <a class="tool" href="page-numbers/">
-      <span class="kicker">Number</span>
-      <h3>Add page numbers <span class="arrow">→</span></h3>
-      <p>Position, starting number and wording. Skip the cover page properly.</p>
-    </a>
+    <a class="tool" href="redact-pdf/"><span class="ic" data-ic="eye"></span><span class="tx"><h3>Redact PDF</h3><p>Destroys what is underneath rather than covering it.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="sign-pdf/"><span class="ic" data-ic="pen"></span><span class="tx"><h3>Sign PDF</h3><p>Draw a signature and place it.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="watermark-pdf/"><span class="ic" data-ic="droplet"></span><span class="tx"><h3>Watermark PDF</h3><p>Text or a logo across the pages.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="page-numbers/"><span class="ic" data-ic="number"></span><span class="tx"><h3>Add page numbers</h3><p>Position, starting number and wording.</p></span><span class="chev" data-ic="chev"></span></a>
   </div>
 
   <h2 class="eyebrow">Batch</h2>
   <div class="tools">
-    <a class="tool" href="workspace/">
-      <span class="kicker">Several at once</span>
-      <h3>Workspace <span class="arrow">→</span></h3>
-      <p>Load a document once and stack the jobs — rotate, sign, number, compress — then download at the end. Nothing is written to disk along the way.</p>
-    </a>
-    <a class="tool" href="certificate/">
-      <span class="kicker">Many at once</span>
-      <h3>Certificate Press <span class="arrow">→</span></h3>
-      <p>One design × many names. Paste a spreadsheet, drop your artwork, get every personalised certificate, badge or ID card as one PDF or a ZIP.</p>
-    </a>
-    <a class="tool soon" href="roadmap/">
-      <span class="kicker">Roadmap</span>
-      <h3>What's coming — and what never will</h3>
-      <p>Edit, OCR, form filling and more are being built. Office conversions and AI never will be, and the page explains exactly why.</p>
-    </a>
+    <a class="tool" href="workspace/"><span class="ic" data-ic="stack"></span><span class="tx"><h3>Workspace</h3><p>Load a document once and stack the jobs, then download at the end.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool" href="certificate/"><span class="ic" data-ic="badge"></span><span class="tx"><h3>Certificate Press</h3><p>One design × many names, as personalised certificates.</p></span><span class="chev" data-ic="chev"></span></a>
+    <a class="tool soon" href="roadmap/"><span class="ic" data-ic="roadmap"></span><span class="tx"><h3>What's coming</h3><p>Edit, OCR, form filling and more are being built.</p></span><span class="chev" data-ic="chev"></span></a>
   </div>
-
-  <section class="prose">
-
-    <h2>Why this exists</h2>
-    <p>
-      Every other free PDF site works the same way: you upload your file to a company's
-      servers, they process it there, and you download the result. That is fine for a
-      restaurant menu. It is not fine for a signed contract, a medical report, a bank
-      statement, or a scan of somebody's Aadhaar card — and those are exactly the documents
-      people put through these tools every day.
-    </p>
-    <p>
-      Kagaz does the work in your browser instead. That single decision has some pleasant
-      side effects: there are no daily task limits, because running the job costs me nothing.
-      There are no file size caps beyond what your own machine can hold. There are no
-      accounts. And once the page has loaded, you can turn off your WiFi and keep working.
-    </p>
-
-    <h2>What Kagaz will not do</h2>
-    <p>
-      Being honest about the edges is the whole point, so: <b>there is no PDF to Word
-      conversion here, and there never will be.</b> Doing it properly means reconstructing a
-      layout from a page description, and it cannot be done well inside a browser. Every free
-      tool that offers it is sending your document to a server. If you need it, that trade-off
-      might be worth it to you — but you should know you are making it.
-    </p>
-    <p>
-      The same goes for office documents in the other direction, for turning a web page into a
-      PDF, and for anything involving AI. The <a href="roadmap/">roadmap</a> lists every one of
-      them with the reason.
-    </p>
-    <p>
-      Kagaz also will not remove a password you do not have, and will not claim that a
-      signature drawn on a page is a legally binding e-signature. When compression cannot
-      safely shrink an image — a CMYK scan, a JPEG 2000 photo — it leaves it alone and
-      says so, rather than corrupting it to make a number look better.
-    </p>
-
-    <h2 id="how-we-know">There is no counter on this page</h2>
-    <p>
-      You will not find a “2 million documents processed” badge anywhere on this site, and there
-      never will be one. A number like that has to be counted somewhere, which means a request
-      fired from your browser every time you open a page or press a button. It would be tiny,
-      and anonymous, and it would still be this site watching you.
-    </p>
-    <p>
-      So <b>I have no idea how many people use Kagaz</b>, because finding out would mean watching
-      you. That is the trade, and I would rather have it this way round.
-    </p>
-    <p>
-      This is not a promise you have to take on faith. Open your browser's developer tools,
-      switch to the Network tab, then try anything on this page — nothing leaves. The
-      repository's test suite
-      <a href="https://github.com/namastevis/kagaz/blob/main/tests/verify.mjs">fails the build</a>
-      if any page ever loads something from another origin, or if the shared scripts ever gain a
-      network call. If you want a number that tells you whether this is worth trusting, the
-      <a href="https://github.com/namastevis/kagaz">repository is public</a> and so is its star count.
-    </p>
-
-    <h2>How it is built</h2>
-    <p>
-      Plain HTML, CSS and JavaScript. No framework, no build step, no bundler. Each tool is
-      one self-contained file. The heavy lifting is done by
-      <a href="https://github.com/Hopding/pdf-lib">pdf-lib</a>,
-      <a href="https://mozilla.github.io/pdf.js/">pdf.js</a> and
-      <a href="https://stuk.github.io/jszip/">JSZip</a>, all vendored into the repository
-      rather than pulled from a CDN — a CDN would quietly break the offline promise.
-    </p>
-    <p>
-      If you want to change something, clone the repository and open a file in your browser.
-      That is the entire development environment.
-    </p>
-
-  </section>
 
   <section class="who">
     <h2>Who made this</h2>
     <p>
-      I'm <b>Amit Jena</b> — an <em>Accidental Designer</em>. Mathematics and computer science by
-      training, pulled sideways into design, and now mostly building data-heavy things: dashboards,
-      document tools, anything that turns a pile of numbers or paper into something a person can use.
-    </p>
-    <p>
-      Nearly all of it is open source, and I'd rather it stayed that way. Partly because a tool
-      asking for your trust should let you check it, and partly because I have never learned more
-      from anything than from reading other people's code.
+      I'm <b>Amit Jena</b> — an <em>Accidental Designer</em>, building data-heavy things:
+      dashboards, document tools, anything that turns a pile of numbers or paper into
+      something a person can use.
     </p>
     <div class="links">
       <a href="https://namastevis.in/">Website</a>
@@ -326,7 +177,6 @@
   <footer class="foot">
     <div class="r">
       <span>Made with ❤️ in India</span> <span class="dot">·</span>
-      <span>works even when the WiFi doesn't</span> <span class="dot">·</span>
       <a href="LICENSE">MIT licensed</a> <span class="dot">·</span>
       <a href="report/">Report a problem</a> <span class="dot">·</span>
       <a href="https://github.com/namastevis/kagaz">Source on GitHub</a> <span class="dot">·</span>
@@ -345,6 +195,9 @@
   'use strict';
   var K = window.Kagaz, ops = window.KagazOps;
 
+  // Fill every [data-ic] placeholder written straight into the static markup above.
+  K.$$('[data-ic]').forEach(function (n) { n.innerHTML = K.icon(n.getAttribute('data-ic')); });
+
   var current = null;      // { kind:'pdf'|'image', name, size, bytes, pages, images, file }
   var mergeFiles = [];      // [{ file, name, size, range }]
   var lastOut = null;       // { bytes, name } — most recent downloadable result
@@ -359,17 +212,17 @@
   ];
 
   var ACTIONS_PDF = [
-    { key: 'compress', ic: '📉', label: 'Make it smaller', note: 'shrink to a target size', inline: true },
-    { key: 'sign', ic: '✍️', label: 'Sign it', href: 'sign-pdf/' },
-    { key: 'split', ic: '✂️', label: 'Split or pick pages', href: 'split-pdf/' },
-    { key: 'organize', ic: '🔀', label: 'Reorder or rotate', href: 'organize-pdf/' },
-    { key: 'redact', ic: '⬛', label: 'Hide information', href: 'redact-pdf/' },
-    { key: 'watermark', ic: '💧', label: 'Add watermark or page numbers', href: 'watermark-pdf/' },
-    { key: 'topdfimg', ic: '🖼️', label: 'Turn into images', href: 'pdf-to-jpg/' },
-    { key: 'merge', ic: '➕', label: 'Add another file to merge', note: 'combine with this one', inline: true }
+    { key: 'compress', ic: 'shrink', label: 'Make it smaller', note: 'shrink to a target size', inline: true },
+    { key: 'sign', ic: 'pen', label: 'Sign it', href: 'sign-pdf/' },
+    { key: 'split', ic: 'scissors', label: 'Split or pick pages', href: 'split-pdf/' },
+    { key: 'organize', ic: 'rotate', label: 'Reorder or rotate', href: 'organize-pdf/' },
+    { key: 'redact', ic: 'eye', label: 'Hide information', href: 'redact-pdf/' },
+    { key: 'watermark', ic: 'droplet', label: 'Add watermark or page numbers', href: 'watermark-pdf/' },
+    { key: 'topdfimg', ic: 'image', label: 'Turn into images', href: 'pdf-to-jpg/' },
+    { key: 'merge', ic: 'plus', label: 'Add another file to merge', note: 'combine with this one', inline: true }
   ];
   var ACTIONS_IMG = [
-    { key: 'topdf', ic: '🖼️', label: 'Turn into a PDF', href: 'jpg-to-pdf/' }
+    { key: 'topdf', ic: 'image', label: 'Turn into a PDF', href: 'jpg-to-pdf/' }
   ];
 
   var pickBtn = K.$('#pickBtn'), pickMsgEl = K.$('#pickMsg');
@@ -425,10 +278,11 @@
       var node = a.inline
         ? K.el('button', { type: 'button', class: 'action', onclick: function () { enterInline(a.key); } })
         : K.el('a', { class: 'action', href: a.href });
-      node.appendChild(K.el('span', { class: 'ic', text: a.ic, 'aria-hidden': 'true' }));
+      node.appendChild(K.el('span', { class: 'ic', html: K.icon(a.ic), 'aria-hidden': 'true' }));
       var tx = K.el('span', { class: 'tx', text: a.label });
       if (a.note) tx.appendChild(K.el('small', { text: a.note }));
       node.appendChild(tx);
+      node.appendChild(K.el('span', { class: 'chev', html: K.icon('chev'), 'aria-hidden': 'true' }));
       actionsEl.appendChild(node);
     });
 

@@ -11,12 +11,6 @@
 <meta property="og:url" content="https://kagaz.namastevis.in/merge-pdf/">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../shared/kagaz.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Are my PDFs uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Kagaz has no server and no upload endpoint. The merge happens in your browser using JavaScript; you can confirm it by watching the Network tab in your browser's developer tools."}},
-{"@type":"Question","name":"Is there a limit on file size or number of files?","acceptedAnswer":{"@type":"Answer","text":"There is no artificial limit. The only ceiling is your own device's memory, since everything is processed inside the browser tab."}},
-{"@type":"Question","name":"Will merging change my page sizes?","acceptedAnswer":{"@type":"Answer","text":"No. Each page keeps its original size, orientation and rotation. A mixed set of A4 and A3 pages stays mixed."}}]}
-</script>
 </head>
 <body>
 <div class="wrap">
@@ -32,12 +26,8 @@
     </nav>
   </header>
 
-  <p class="eyebrow">Merge · nothing uploaded</p>
   <h1>Merge PDF</h1>
-  <p class="lede">
-    Combine any number of PDFs into one file, in the order you choose. Page sizes, orientation
-    and rotation stay exactly as they were — <b>your files never leave your phone</b>.
-  </p>
+  <p class="lede">Combine any number of PDFs into one, in the order you choose.</p>
 
   <section class="panel" id="panelFiles">
     <div class="head"><span class="step">1</span><h2>Your PDFs</h2><span class="note" id="fileNote">no files yet</span></div>
@@ -94,53 +84,6 @@
       <a href="../">All 14 tools</a>
     </div>
   </div>
-
-  <section class="prose">
-    <h2>How it works</h2>
-    <p>
-      Drop your files in, drag them into the order you want, and press merge. Kagaz reads
-      each PDF with <a href="https://github.com/Hopding/pdf-lib">pdf-lib</a>, copies the pages
-      you asked for into a new document, and hands you the result as a download. All of it
-      happens in JavaScript inside this tab.
-    </p>
-    <p>
-      Because each page is copied rather than redrawn, everything that was in the original
-      survives: text stays selectable, vector graphics stay sharp, and a mixed stack of A4
-      portrait and A3 landscape pages stays exactly as it was.
-    </p>
-
-    <h2>Common questions</h2>
-    <h3>Are my files uploaded?</h3>
-    <p>
-      No. There is no server to upload to. If you would rather verify than trust, open your
-      browser's developer tools, go to the Network tab, and merge a file — you will see no
-      requests go out.
-    </p>
-    <h3>Is there a limit?</h3>
-    <p>
-      No artificial one. The real ceiling is your device's memory, because the whole job is
-      held in the tab. A laptop handles a few hundred megabytes comfortably; a phone will
-      want to stay well under that, and Kagaz warns you when a job looks too big.
-    </p>
-    <h3>What about password-protected PDFs?</h3>
-    <p>
-      Kagaz refuses them rather than producing a broken file. Open the PDF in any reader,
-      save an unprotected copy, and merge that.
-    </p>
-    <h3>Does it work offline?</h3>
-    <p>
-      Yes. Once this page has loaded, you can disconnect entirely and keep merging. The PDF
-      libraries are served from this site, not a CDN, precisely so that this is true.
-    </p>
-
-    <h2>Other Kagaz tools</h2>
-    <ul>
-      <li><a href="../split-pdf/">Split PDF</a> — extract a range, or break one file into many</li>
-      <li><a href="../organize-pdf/">Organize PDF</a> — reorder, remove and rotate pages</li>
-      <li><a href="../compress-pdf/">Compress PDF</a> — shrink images, keep text as text</li>
-      <li><a href="../jpg-to-pdf/">JPG to PDF</a> — build a PDF from images</li>
-    </ul>
-  </section>
 
   <footer class="foot">
     <div class="r">

@@ -11,12 +11,6 @@
 <meta property="og:url" content="https://kagaz.namastevis.in/compress-pdf/">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../shared/kagaz.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does compressing a PDF here make the text unselectable?","acceptedAnswer":{"@type":"Answer","text":"Not in the default mode. Kagaz replaces only the images inside the PDF and leaves text, vector graphics and links untouched, so text stays selectable and searchable. The optional flatten mode does turn pages into pictures, and warns you before it does."}},
-{"@type":"Question","name":"Is my PDF uploaded to be compressed?","acceptedAnswer":{"@type":"Answer","text":"No. The compression runs in your browser. Kagaz has no server and no upload endpoint."}},
-{"@type":"Question","name":"Why did my file barely shrink?","acceptedAnswer":{"@type":"Answer","text":"Because most of its size probably is not images. A PDF full of text and vector graphics is already close to as small as it gets. Kagaz shows you a breakdown of every image it found, what it changed, and what it deliberately left alone."}}]}
-</script>
 </head>
 <body>
 <div class="wrap">
@@ -32,13 +26,8 @@
     </nav>
   </header>
 
-  <p class="eyebrow">Compress · nothing uploaded</p>
   <h1>Make it smaller</h1>
-  <p class="lede">
-    Shrinks the pictures inside your PDF and <b>leaves the text as text</b>. Pick how small it
-    needs to be — Kagaz keeps trying until it fits, and tells you honestly if it can't without
-    ruining the text.
-  </p>
+  <p class="lede">Shrinks the pictures inside your PDF and leaves the text as text.</p>
 
   <section class="panel" id="panelFile">
     <div class="head"><span class="step">1</span><h2>Your PDF</h2><span class="note" id="fileNote">no file yet</span></div>
@@ -132,78 +121,6 @@
       <a href="../">All 14 tools</a>
     </div>
   </div>
-
-  <section class="prose">
-    <h2>What actually makes a PDF big</h2>
-    <p>
-      Almost always, images. A page of text is a few kilobytes; a photograph someone pasted in
-      from a phone is four megabytes, and it is sitting in there at full camera resolution even
-      though it is printed two inches wide. Scanned documents are the same story — every page is
-      a photograph of a page.
-    </p>
-    <p>
-      So the honest way to compress a PDF is to find those images, shrink them to a resolution
-      that actually matters at the size they are displayed, re-encode them, and put them back —
-      leaving everything else alone. That is what the size targets above do, automatically.
-    </p>
-
-    <h2>The three methods, if you want to choose yourself</h2>
-    <h3>Shrink images — the default</h3>
-    <p>
-      Walks through every image embedded in the document, downsamples anything larger than your
-      chosen detail level, re-encodes it as a JPEG, and swaps it back in place. Text stays text.
-      Vector graphics stay sharp. Links and bookmarks survive. Typical savings on an image-heavy
-      document are 50–90%.
-    </p>
-    <h3>Lossless only</h3>
-    <p>
-      Rewrites the file's internal structure — packs objects more efficiently, drops orphaned
-      data, strips editing metadata and page thumbnails. Nothing is re-encoded, so nothing can
-      degrade. The saving is modest, usually 5–20%, and sometimes almost nothing. Use it when
-      the document must be preserved byte-for-byte in appearance.
-    </p>
-    <h3>Flatten pages</h3>
-    <p>
-      Renders every page to a JPEG and builds a new PDF out of those pictures. This gives the
-      largest reduction and is the right choice for a scanned document that is already nothing
-      but images. <b>It also destroys text:</b> you will not be able to select, search or copy
-      anything afterwards, and screen readers will find an empty document. Kagaz asks before
-      doing this. Most other tools do it silently and call it "compression".
-    </p>
-
-    <h2>What gets left alone, and why</h2>
-    <p>
-      Some images cannot be safely re-encoded in a browser, and Kagaz would rather skip them than
-      corrupt your file to make a number look better. It reports each one:
-    </p>
-    <ul>
-      <li><b>CMYK images</b> — browsers decode these unreliably, and getting it wrong shifts every colour on a print job.</li>
-      <li><b>JPEG 2000, JBIG2, CCITT fax</b> — the formats scanners produce. Decoding them correctly is a project in itself.</li>
-      <li><b>Indexed and spot-colour images</b> — converting these to plain RGB would change how they render.</li>
-      <li><b>Images already small enough</b> — no point re-encoding something that is already efficient.</li>
-      <li><b>Anything where re-encoding did not actually save space</b> — the original is kept.</li>
-    </ul>
-    <p>
-      Supporting more of these is exactly the kind of contribution the project wants. They are
-      written up on the <a href="../contribute/">contribute page</a>.
-    </p>
-
-    <h2>Common questions</h2>
-    <h3>Is my file uploaded?</h3>
-    <p>No. There is no server. Watch the Network tab in your developer tools if you would like to confirm it.</p>
-    <h3>What if it can't fit the target?</h3>
-    <p>Kagaz says so plainly, and gives you its best, honest attempt rather than quietly flattening your document into a picture to hit a number. Open "More control" to try flatten pages yourself if you are fine with that trade-off.</p>
-    <h3>Can I run it twice to shrink it further?</h3>
-    <p>You can, but you mostly should not. Re-encoding a JPEG that has already been re-encoded adds visible damage without saving much. Try a smaller size target instead.</p>
-
-    <h2>Other Kagaz tools</h2>
-    <ul>
-      <li><a href="../pdf-to-jpg/">PDF to JPG</a> — pages as images at any resolution</li>
-      <li><a href="../scan-to-pdf/">Scan to PDF</a> — photograph paper with your phone</li>
-      <li><a href="../crop-pdf/">Crop PDF</a> — trim the margins</li>
-      <li><a href="../merge-pdf/">Merge PDF</a> — join files into one</li>
-    </ul>
-  </section>
 
   <footer class="foot">
     <div class="r">

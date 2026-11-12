@@ -91,12 +91,21 @@
       else if (list.length) K.say(node, 'err', 'That file type is not accepted here. Expected ' + accept + '.');
     }
 
-    node.setAttribute('role', 'button');
-    node.setAttribute('tabindex', '0');
-    node.addEventListener('click', function (e) { if (e.target !== input) input.click(); });
-    node.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
-    });
+    // Normally the whole node is the click target too (it's a visible, bounded
+    // drop box — e.g. the dashed "Drop a PDF here" area). Pass clickTarget when
+    // node is a larger drag-and-drop area than the thing that should look and
+    // act like a button, so clicking empty space nearby doesn't open a picker.
+    var clickEl = opts.clickTarget || node;
+    clickEl.addEventListener('click', function (e) { if (e.target !== input) input.click(); });
+    if (clickEl === node) {
+      // A real <button> (the clickTarget case) already has native keyboard
+      // activation and its own focus semantics — only a plain div needs this.
+      node.setAttribute('role', 'button');
+      node.setAttribute('tabindex', '0');
+      node.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
+      });
+    }
     input.addEventListener('change', function () { emit(input.files); input.value = ''; });
 
     ['dragenter', 'dragover'].forEach(function (ev) {

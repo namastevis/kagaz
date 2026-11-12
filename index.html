@@ -257,15 +257,15 @@
   var stepsBar = K.$('#stepsBar'), stepsListEl = K.$('#stepsList'), stepsNoteEl = K.$('#stepsNote');
   var stepsGoBtn = K.$('#stepsGo'), stepsClearBtn = K.$('#stepsClear'), stepsMsgEl = K.$('#stepsMsg'), stepsCountEl = K.$('#stepsCount');
 
+  // The panel is a generous drag-and-drop target (drop a file anywhere in
+  // this section), but only the hero button itself opens the file picker —
+  // clicking empty space or the camera/shortcut links below must not.
   var pickInput = K.dropzone(panelPick, {
     accept: '.pdf,application/pdf,image/jpeg,image/png,.jpg,.jpeg,.png',
+    clickTarget: pickBtn,
     match: function (f) { return K.isPdf(f) || /\.(jpe?g|png)$/i.test(f.name) || /^image\/(jpeg|png)$/.test(f.type); },
     onFiles: function (added) { loadPicked(added[0]); }
   });
-  // The hero button is the only visible trigger — the rest of the panel isn't a drop target by itself.
-  panelPick.removeAttribute('role');
-  panelPick.removeAttribute('tabindex');
-  pickBtn.addEventListener('click', function () { pickInput.click(); });
 
   async function loadPicked(file) {
     K.say(pickMsgEl, 'info', 'Reading “' + file.name + '”…');
